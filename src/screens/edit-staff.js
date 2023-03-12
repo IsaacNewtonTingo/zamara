@@ -4,15 +4,22 @@ import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { globalStyles } from "../assets/styles/global-styles";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
-import { Icon } from "native-base";
+import { Icon, HStack } from "native-base";
 
 import PrimaryInput from "../components/inputs/primary-input";
 import PrimaryText from "../components/text/primary-text";
 import PrimaryButton from "../components/buttons/primary-btn";
 import CardGradient from "../components/cards/card-gradient";
 import SecondaryButton from "../components/buttons/secondary-button";
+import { showMyToast } from "../functions/show-toast";
+import axios from "axios";
+import ActionModal from "../components/modal/action-modal";
+import SecondaryText from "../components/text/secondary-text";
+import { TouchableOpacity } from "react-native";
+import GrayText from "../components/text/gray-text";
 
 const { width, height } = Dimensions.get("window");
+const B = (props) => <PrimaryText>{props.children}</PrimaryText>;
 
 export default function EditStaff({ route, navigation }) {
   const [staffName, setStaffName] = useState(route.params.staff.staffName);
@@ -23,12 +30,88 @@ export default function EditStaff({ route, navigation }) {
   const [department, setDepartment] = useState(route.params.staff.department);
   const [salary, setSalary] = useState(route.params.staff.salary);
 
-  const [submitting, setSubmitting] = useState(false);
+  const staffID = route.params.staff._id;
 
-  async function edit() {}
+  const [submitting, setSubmitting] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  const url = `${process.env.CRUD_CRUD_ENDPOINT}`;
+
+  async function edit() {
+    if (!staffName || !staffNumber || !email || !department || !salary) {
+      showMyToast({
+        status: "error",
+        title: "Required field",
+        description: "All fields are requireed",
+      });
+    } else {
+      setSubmitting(true);
+      await axios
+        .put(`${url}/${staffID}`, {
+          staffName,
+          staffNumber,
+          staffEmail: email,
+          department,
+          salary,
+        })
+        .then((response) => {
+          console.log(response.data);
+          setSubmitting(false);
+          showMyToast({
+            status: "success",
+            title: "Success",
+            description: "Staff records updated successfully",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setSubmitting(false);
+
+          showMyToast({
+            status: "error",
+            title: "Failed",
+            description: err.message,
+          });
+        });
+    }
+  }
+
+  function handleDelete() {
+    setDeleteModal(true);
+  }
+
+  async function deleteStaff() {
+    setSubmitting(true);
+
+    await axios
+      .delete(`${url}/${staffID}`)
+      .then((response) => {
+        console.log(response.data);
+        setSubmitting(false);
+        showMyToast({
+          status: "success",
+          title: "Success",
+          description: "Staff records updated successfully",
+        });
+        navigation.goBack();
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitting(false);
+
+        showMyToast({
+          status: "error",
+          title: "Failed",
+          description: err.message,
+        });
+      });
+  }
 
   return (
-    <KeyboardAwareScrollView style={globalStyles.container}>
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="always"
+      style={globalStyles.container}
+    >
       <View style={styles.shadow}>
         <CardGradient style={styles.lowerContainer}>
           <PrimaryText style={{ marginVertical: 10 }}>Staff number</PrimaryText>
@@ -110,14 +193,36 @@ export default function EditStaff({ route, navigation }) {
           />
 
           <SecondaryButton
-            onPress={edit}
-            submitting={submitting}
-            disabled={submitting}
+            onPress={handleDelete}
             title="Delete"
             style={{ marginTop: 20 }}
           />
         </CardGradient>
       </View>
+
+      {deleteModal == true && (
+        <ActionModal isOpen={deleteModal}>
+          <HStack justifyContent="space-between">
+            <SecondaryText style={{ fontSize: 20 }}>
+              Delete Staff?
+            </SecondaryText>
+            <TouchableOpacity onPress={() => setDeleteModal(false)}>
+              <SecondaryText style={{ fontSize: 20 }}>X</SecondaryText>
+            </TouchableOpacity>
+          </HStack>
+
+          <GrayText>
+            Are you sure you want to delete <B>“{staffName}”</B> as staff? This
+            process is irrevasible and you'll lose their data
+          </GrayText>
+          <PrimaryButton
+            submitting={submitting}
+            disabled={submitting}
+            onPress={deleteStaff}
+            title="Delete"
+          />
+        </ActionModal>
+      )}
     </KeyboardAwareScrollView>
   );
 }

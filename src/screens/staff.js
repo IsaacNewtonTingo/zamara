@@ -9,14 +9,14 @@ import { FloatingAction } from "react-native-floating-action";
 import { Entypo } from "@expo/vector-icons";
 import colors from "../assets/colors/colors";
 import LoadingData from "../components/Loading/loading-data";
-import { Alert } from "react-native";
 
 const optionsPerPage = [2, 3, 4];
 
-export default function Staff({ navigation }) {
+export default function Staff({ navigation, route }) {
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
 
+  const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [staffList, setStaffList] = useState([]);
 
@@ -24,8 +24,8 @@ export default function Staff({ navigation }) {
 
   useEffect(() => {
     getStaff();
-  }, []);
-
+  }, [(navigation, loading)]);
+  navigation.addListener("focus", () => setLoading(!loading));
   const AddStaff = () => {
     return <Entypo name="add-user" size={24} color={colors.light} />;
   };
