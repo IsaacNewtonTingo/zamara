@@ -3,16 +3,28 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Staff from "../screens/staff";
 import Home from "../screens/home";
+import colors from "../assets/colors/colors";
+import LeftItem from "../components/nav-items/left-item";
 
-export default function HomeStack() {
+export default function HomeStack({ navigation }) {
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerTintColor: colors.light,
+        headerLeft: (props) => <LeftItem navigation={navigation} {...props} />,
+        headerStyle: {
+          backgroundColor: colors.dark,
+        },
       }}
     >
-      <Stack.Screen component={Home} name="Home" />
+      <Stack.Screen
+        component={Home}
+        name="Home"
+        options={{
+          headerTitle: "Dashboard",
+        }}
+      />
     </Stack.Navigator>
   );
 }

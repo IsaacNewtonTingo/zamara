@@ -9,6 +9,7 @@ export default function AuthNav() {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerTintColor: colors.light,
         headerStyle: {
           backgroundColor: colors.dark,
         },

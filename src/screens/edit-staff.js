@@ -18,6 +18,14 @@ import SecondaryText from "../components/text/secondary-text";
 import { TouchableOpacity } from "react-native";
 import GrayText from "../components/text/gray-text";
 
+import {
+  Octicons,
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
+
 const { width, height } = Dimensions.get("window");
 const B = (props) => <PrimaryText>{props.children}</PrimaryText>;
 
@@ -118,7 +126,7 @@ export default function EditStaff({ route, navigation }) {
           <PrimaryInput
             InputLeftElement={
               <Icon
-                as={<MaterialIcons name="person" />}
+                as={<Octicons name="number" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -134,7 +142,7 @@ export default function EditStaff({ route, navigation }) {
             onChangeText={setStaffName}
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<FontAwesome name="user" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -148,7 +156,7 @@ export default function EditStaff({ route, navigation }) {
             onChangeText={setEmail}
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<Ionicons name="mail" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -162,7 +170,7 @@ export default function EditStaff({ route, navigation }) {
             onChangeText={setDepartment}
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<MaterialCommunityIcons name="office-building-outline" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -176,7 +184,7 @@ export default function EditStaff({ route, navigation }) {
             onChangeText={setSalary}
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<FontAwesome5 name="coins" />}
                 size={5}
                 ml="2"
                 color="muted.400"

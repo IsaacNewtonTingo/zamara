@@ -10,16 +10,18 @@ import PrimaryInput from "../components/inputs/primary-input";
 import PrimaryText from "../components/text/primary-text";
 import PrimaryButton from "../components/buttons/primary-btn";
 import CardGradient from "../components/cards/card-gradient";
-import SecondaryButton from "../components/buttons/secondary-button";
 import { showMyToast } from "../functions/show-toast";
 import axios from "axios";
-import ActionModal from "../components/modal/action-modal";
-import SecondaryText from "../components/text/secondary-text";
-import { TouchableOpacity } from "react-native";
-import GrayText from "../components/text/gray-text";
+
+import {
+  Octicons,
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
-const B = (props) => <PrimaryText>{props.children}</PrimaryText>;
 
 export default function AddStaff({ route, navigation }) {
   const [staffName, setStaffName] = useState("");
@@ -83,7 +85,7 @@ export default function AddStaff({ route, navigation }) {
           <PrimaryInput
             InputLeftElement={
               <Icon
-                as={<MaterialIcons name="person" />}
+                as={<Octicons name="number" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -91,15 +93,17 @@ export default function AddStaff({ route, navigation }) {
             }
             value={staffNumber}
             onChangeText={setStaffNumber}
+            placeholder="e.g AZERT122"
           />
 
           <PrimaryText style={{ marginVertical: 10 }}>Staff name</PrimaryText>
           <PrimaryInput
             value={staffName}
             onChangeText={setStaffName}
+            placeholder="e.g John Doe"
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<FontAwesome name="user" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -111,9 +115,10 @@ export default function AddStaff({ route, navigation }) {
           <PrimaryInput
             value={email}
             onChangeText={setEmail}
+            placeholder="e.g john.doe@zamara.co.ke"
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<Ionicons name="mail" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -125,9 +130,10 @@ export default function AddStaff({ route, navigation }) {
           <PrimaryInput
             value={department}
             onChangeText={setDepartment}
+            placeholder="e.g HR"
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<MaterialCommunityIcons name="office-building-outline" />}
                 size={5}
                 ml="2"
                 color="muted.400"
@@ -139,9 +145,10 @@ export default function AddStaff({ route, navigation }) {
           <PrimaryInput
             value={salary.toString()}
             onChangeText={setSalary}
+            placeholder="e.g 45000"
             InputLeftElement={
               <Icon
-                as={<Feather name="lock" />}
+                as={<FontAwesome5 name="coins" />}
                 size={5}
                 ml="2"
                 color="muted.400"
