@@ -26,6 +26,7 @@ export default function Staff({ navigation, route }) {
     getStaff();
   }, [(navigation, loading)]);
   navigation.addListener("focus", () => setLoading(!loading));
+
   const AddStaff = () => {
     return <Entypo name="add-user" size={24} color={colors.light} />;
   };
@@ -41,10 +42,7 @@ export default function Staff({ navigation, route }) {
 
   async function handleActionPressed(name) {
     if (name == "add") {
-      setAddAdmin(true);
-    } else {
-      setEditAdmin(true);
-      getAdmins();
+      navigation.navigate("AddStaff");
     }
   }
 
