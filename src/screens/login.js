@@ -98,6 +98,7 @@ export default function Login() {
               value={userName}
               onChangeText={setUserName}
               placeholder="e.g optimus"
+              autoCapitalize="none"
             />
 
             <PrimaryText style={{ marginVertical: 10 }}>Password *</PrimaryText>
@@ -106,6 +107,8 @@ export default function Login() {
               secureTextEntry={secureTextEntry}
               onChangeText={setPassword}
               placeholder="********"
+              autoCapitalize="none"
+              keyboardType="email-address"
               InputLeftElement={
                 <Icon
                   as={<Feather name="lock" />}

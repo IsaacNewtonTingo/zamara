@@ -22,6 +22,8 @@ export default function PrimaryInput(props) {
     placeholder,
     onBlur,
     secureTextEntry,
+    keyboardType,
+    autoCapitalize,
   } = props;
   return (
     <Input
@@ -40,6 +42,8 @@ export default function PrimaryInput(props) {
       placeholder={placeholder}
       onBlur={onBlur}
       secureTextEntry={secureTextEntry}
+      keyboardType={keyboardType}
+      autoCapitalize={autoCapitalize}
     />
   );
 }

@@ -116,6 +116,8 @@ export default function AddStaff({ route, navigation }) {
             value={email}
             onChangeText={setEmail}
             placeholder="e.g john.doe@zamara.co.ke"
+            keyboardType="email-address"
+            autoCapitalize="none"
             InputLeftElement={
               <Icon
                 as={<Ionicons name="mail" />}

@@ -1,11 +1,11 @@
 import { Image, StyleSheet, Dimensions, Text, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { globalStyles } from "../assets/styles/global-styles";
 import PrimaryText from "../components/text/primary-text";
 
 import { CredentialsContext } from "../context/credentials.js";
 import {
-  FontAwesome,
+  Feather,
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -14,6 +14,8 @@ import { ScrollView } from "react-native";
 import CardGradient from "../components/cards/card-gradient";
 import { HStack } from "native-base";
 import GrayText from "../components/text/gray-text";
+import axios from "axios";
+import LoadingData from "../components/Loading/loading-data";
 
 const { width } = Dimensions.get("window");
 
@@ -21,8 +23,48 @@ const B = (props) => <PrimaryText>{props.children}</PrimaryText>;
 
 export default function Home() {
   const { storedCredentials } = useContext(CredentialsContext);
+
+  const url = `${process.env.ENDPOINT}`;
+
+  const userID = storedCredentials.id;
+
+  const [age, setAge] = useState("");
+  const [phone, setPhone] = useState("");
+  const [doB, setDoB] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [eyeColor, setEyeColor] = useState("");
+
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  async function getUserData() {
+    await axios
+      .get(`${url}/users/${userID}`)
+      .then((response) => {
+        setLoadingData(false);
+
+        setAge(response.data.age);
+        setPhone(response.data.phone);
+        setDoB(response.data.birthDate);
+        setBloodGroup(response.data.bloodGroup);
+        setHeight(response.data.height);
+        setWeight(response.data.weight);
+        setEyeColor(response.data.eyeColor);
+      })
+      .catch((err) => {
+        setLoadingData(false);
+        console.log(err);
+      });
+  }
   return (
     <ScrollView style={[globalStyles.container, { padding: 20 }]}>
+      {loadingData && <LoadingData isOpen={loadingData} />}
+
       <HStack alignItems="center" marginBottom={5}>
         {/* <View style={styles.imageContainer}>
           <Image
@@ -47,7 +89,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{age}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -88,17 +130,13 @@ export default function Home() {
       <CardGradient style={styles.card}>
         <HStack justifyContent="space-between">
           <HStack space={5}>
-            <MaterialCommunityIcons
-              name="email-outline"
-              size={20}
-              color={colors.gray}
-            />
+            <Feather name="phone" size={20} color={colors.gray} />
             <GrayText style={{ fontFamily: "Montserrat-Regular" }}>
               Phone number
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{phone}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -115,7 +153,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{doB}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -132,7 +170,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{bloodGroup}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -149,7 +187,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{height}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -166,7 +204,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{weight}</PrimaryText>
         </HStack>
       </CardGradient>
 
@@ -183,7 +221,7 @@ export default function Home() {
             </GrayText>
           </HStack>
 
-          <PrimaryText>N/A</PrimaryText>
+          <PrimaryText>{eyeColor}</PrimaryText>
         </HStack>
       </CardGradient>
     </ScrollView>

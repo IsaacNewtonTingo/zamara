@@ -154,6 +154,8 @@ export default function EditStaff({ route, navigation }) {
           <PrimaryInput
             value={email}
             onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
             InputLeftElement={
               <Icon
                 as={<Ionicons name="mail" />}

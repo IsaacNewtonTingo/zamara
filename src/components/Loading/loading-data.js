@@ -8,7 +8,7 @@ import colors from "../../assets/colors/colors";
 export default function LoadingData(props) {
   const { isOpen } = props;
   return (
-    <Modal isOpen={isOpen}>
+    <Modal style={{ backgroundColor: "rgba(0,0,0,0.8)" }} isOpen={isOpen}>
       <View
         style={{
           height: 70,
