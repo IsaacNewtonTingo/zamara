@@ -30,7 +30,7 @@ export default function Home() {
             source={{ uri: storedCredentials.image }}
           />
         </View> */}
-        <GrayText style={{ fontSize: 30 }}>
+        <GrayText style={{ fontSize: 25 }}>
           Welcome,{" "}
           <B>
             {storedCredentials.firstName} {storedCredentials.lastName}
