@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-export default function Staff() {
+export default function Continents() {
   return (
     <View>
-      <Text>Staff</Text>
+      <Text>Continents</Text>
     </View>
   );
 }

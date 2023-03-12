@@ -12,4 +12,9 @@ export const globalStyles = StyleSheet.create({
     fontFamily: "Montserrat-SemiBold",
     textAlign: "left",
   },
+  grayText: {
+    color: colors.dark,
+    fontFamily: "Montserrat-Regular",
+    textAlign: "left",
+  },
 });
