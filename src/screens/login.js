@@ -5,32 +5,73 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import { globalStyles } from "../assets/styles/global-styles";
+import React, { useState, useContext } from "react";
 import PrimaryText from "../components/text/primary-text";
 import CardGradient from "../components/cards/card-gradient";
 import PrimaryInput from "../components/inputs/primary-input";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PrimaryButton from "../components/buttons/primary-btn";
 
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 const { width, height } = Dimensions.get("window");
+import { globalStyles } from "../assets/styles/global-styles";
 
-import {
-  Input,
-  Icon,
-  Stack,
-  Pressable,
-  Center,
-  NativeBaseProvider,
-} from "native-base";
+import { Icon } from "native-base";
 
 import { MaterialIcons, Feather } from "@expo/vector-icons";
+import axios from "axios";
+import { showMyToast } from "../functions/show-toast";
+import { CredentialsContext } from "../context/credentials";
+
+import * as SecureStore from "expo-secure-store";
 
 export default function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+
+  const { storedCredentials, setStoredCredentials } =
+    useContext(CredentialsContext);
+
+  async function login() {
+    setSubmitting(true);
+    await axios
+      .post(
+        `https://dummyjson.com/auth/login`,
+        {
+          username: userName,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      )
+      .then(async (response) => {
+        setSubmitting(false);
+
+        console.log(response.data);
+
+        showMyToast({
+          status: "succcess",
+          title: "Success",
+          description: "Login successfull",
+        });
+
+        setStoredCredentials(response.data);
+        await SecureStore.setItemAsync(
+          "userData",
+          JSON.stringify(response.data)
+        );
+      })
+      .catch((err) => {
+        setSubmitting(false);
+        console.log(err);
+        showMyToast({
+          status: "error",
+          title: "Failed",
+          description: "Something went wrong while trying to login",
+        });
+      });
+  }
   return (
     <View style={globalStyles.container}>
       <KeyboardAwareScrollView
@@ -89,7 +130,13 @@ export default function Login() {
               //   }
             />
 
-            <PrimaryButton title="Login" style={{ marginTop: 20 }} />
+            <PrimaryButton
+              onPress={login}
+              submitting={submitting}
+              disabled={submitting}
+              title="Login"
+              style={{ marginTop: 20 }}
+            />
           </CardGradient>
         </View>
       </KeyboardAwareScrollView>

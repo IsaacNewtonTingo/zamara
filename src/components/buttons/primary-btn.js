@@ -3,6 +3,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import PrimaryText from "../text/primary-text";
 import colors from "../../assets/colors/colors";
+import { BarIndicator } from "react-native-indicators";
 
 export default function PrimaryButton(props) {
   const { onPress, style, title, submitting, disabled } = props;
@@ -12,7 +13,11 @@ export default function PrimaryButton(props) {
       onPress={onPress}
       disabled={disabled}
     >
-      <PrimaryText style={{ color: colors.light }}>{title}</PrimaryText>
+      {submitting ? (
+        <BarIndicator color={colors.light} size={20} />
+      ) : (
+        <PrimaryText style={{ color: colors.light }}>{title}</PrimaryText>
+      )}
     </TouchableOpacity>
   );
 }
