@@ -44,6 +44,7 @@ export default function EditStaff({ route, navigation }) {
   const [deleteModal, setDeleteModal] = useState(false);
 
   const url = `${process.env.CRUD_ENDPOINT}`;
+  const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
 
   async function edit() {
     if (!staffName || !staffNumber || !email || !department || !salary) {
@@ -54,33 +55,38 @@ export default function EditStaff({ route, navigation }) {
       });
     } else {
       setSubmitting(true);
-      await axios
-        .put(`${url}/${staffID}`, {
+      try {
+        await axios.put(`${url}/${staffID}`, {
           staffName,
           staffNumber,
           staffEmail: email,
           department,
           salary,
-        })
-        .then((response) => {
-          console.log(response.data);
-          setSubmitting(false);
-          showMyToast({
-            status: "success",
-            title: "Success",
-            description: "Staff records updated successfully",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setSubmitting(false);
-
-          showMyToast({
-            status: "error",
-            title: "Failed",
-            description: err.message,
-          });
         });
+
+        //send email
+        await axios.post(emailUrl, {
+          message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been updated`,
+          subject: `Profile Notification #Edited`,
+          email,
+        });
+
+        setSubmitting(false);
+        showMyToast({
+          status: "success",
+          title: "Success",
+          description: "Staff records updated successfully",
+        });
+      } catch (error) {
+        console.log(error);
+        setSubmitting(false);
+
+        showMyToast({
+          status: "error",
+          title: "Failed",
+          description: error.message,
+        });
+      }
     }
   }
 
@@ -90,29 +96,33 @@ export default function EditStaff({ route, navigation }) {
 
   async function deleteStaff() {
     setSubmitting(true);
+    try {
+      await axios.delete(`${url}/${staffID}`);
 
-    await axios
-      .delete(`${url}/${staffID}`)
-      .then((response) => {
-        console.log(response.data);
-        setSubmitting(false);
-        showMyToast({
-          status: "success",
-          title: "Success",
-          description: "Staff records updated successfully",
-        });
-        navigation.goBack();
-      })
-      .catch((err) => {
-        console.log(err);
-        setSubmitting(false);
-
-        showMyToast({
-          status: "error",
-          title: "Failed",
-          description: err.message,
-        });
+      //send email
+      await axios.post(emailUrl, {
+        message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been deleted`,
+        subject: `Profile Notification #Deleted`,
+        email,
       });
+
+      setSubmitting(false);
+      showMyToast({
+        status: "success",
+        title: "Success",
+        description: "Staff records updated successfully",
+      });
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+
+      showMyToast({
+        status: "error",
+        title: "Failed",
+        description: error.message,
+      });
+    }
   }
 
   return (

@@ -13,8 +13,6 @@ import CardGradient from "../components/cards/card-gradient";
 import { showMyToast } from "../functions/show-toast";
 import axios from "axios";
 
-import RNSmtpMailer from "react-native-smtp-mailer";
-
 import {
   Octicons,
   FontAwesome,
@@ -35,6 +33,7 @@ export default function AddStaff({ route, navigation }) {
   const [submitting, setSubmitting] = useState(false);
 
   const url = `${process.env.CRUD_ENDPOINT}`;
+  const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
 
   async function addStaff() {
     if (!staffName || !staffNumber || !email || !department || !salary) {
@@ -45,43 +44,41 @@ export default function AddStaff({ route, navigation }) {
       });
     } else {
       setSubmitting(true);
-      await axios
-        .post(`${url}`, {
+
+      try {
+        await axios.post(`${url}`, {
           staffName,
           staffNumber,
           staffEmail: email,
           department,
           salary,
-        })
-        .then(async (response) => {
-          console.log(response.data);
-          setSubmitting(false);
-
-          await RNSmtpMailer.sendMail({
-            mailhost: "smtp.smtpbucket.com",
-            port: 8025,
-            ssl: false,
-            recipients: email,
-            subject: "Profile Notification #Created",
-            body: `Greeting ${staffName}, we are glad to inform you that your staff profile has been created.`,
-          });
-          showMyToast({
-            status: "success",
-            title: "Success",
-            description: "Staff created successfully",
-          });
-          navigation.goBack();
-        })
-        .catch((err) => {
-          console.log(err);
-          setSubmitting(false);
-
-          showMyToast({
-            status: "error",
-            title: "Failed",
-            description: err.message,
-          });
         });
+
+        setSubmitting(false);
+
+        //send email
+        await axios.post(emailUrl, {
+          message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been created`,
+          subject: `Profile Notification #Created`,
+          email,
+        });
+
+        showMyToast({
+          status: "success",
+          title: "Success",
+          description: "Staff created successfully",
+        });
+        navigation.goBack();
+      } catch (error) {
+        console.log(error);
+        setSubmitting(false);
+
+        showMyToast({
+          status: "error",
+          title: "Failed",
+          description: error.message,
+        });
+      }
     }
   }
 

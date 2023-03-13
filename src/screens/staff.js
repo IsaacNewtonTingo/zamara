@@ -48,7 +48,7 @@ export default function Staff({ navigation, route }) {
 
   async function getStaff() {
     await axios
-      .get(url)
+      .get(`${url}`)
       .then((response) => {
         setLoadingData(false);
         setStaffList(response.data);
