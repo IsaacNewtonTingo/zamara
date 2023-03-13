@@ -46,40 +46,53 @@ export default function AddStaff({ route, navigation }) {
       setSubmitting(true);
       console.log(url);
       console.log(emailUrl);
-      try {
-        await axios.post(`${url}`, {
+
+      await axios
+        .post(`${url}`, {
           staffName,
           staffNumber,
           staffEmail: email,
           department,
           salary,
-        });
+        })
+        .then(async () => {
+          //send email
+          await axios
+            .post(emailUrl, {
+              message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been created`,
+              subject: `Profile Notification #Created`,
+              email,
+            })
+            .then(() => {
+              setSubmitting(false);
+              showMyToast({
+                status: "success",
+                title: "Success",
+                description: "Staff created successfully",
+              });
+              navigation.goBack();
+            })
+            .catch((error) => {
+              console.log(error);
+              setSubmitting(false);
 
-        setSubmitting(false);
+              showMyToast({
+                status: "error",
+                title: "Failed",
+                description: error.message,
+              });
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          setSubmitting(false);
 
-        //send email
-        await axios.post(emailUrl, {
-          message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been created`,
-          subject: `Profile Notification #Created`,
-          email,
+          showMyToast({
+            status: "error",
+            title: "Failed",
+            description: error.message,
+          });
         });
-
-        showMyToast({
-          status: "success",
-          title: "Success",
-          description: "Staff created successfully",
-        });
-        navigation.goBack();
-      } catch (error) {
-        console.log(error);
-        setSubmitting(false);
-
-        showMyToast({
-          status: "error",
-          title: "Failed",
-          description: error.message,
-        });
-      }
     }
   }
 
