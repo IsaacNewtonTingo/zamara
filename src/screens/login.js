@@ -34,13 +34,13 @@ export default function Login() {
   const { storedCredentials, setStoredCredentials } =
     useContext(CredentialsContext);
 
-  const DUMMY_JSON_ENDPOINT = `${process.env.DUMMY_JSON_ENDPOINT}`;
+  const AUTH = `${process.env.AUTH}`;
 
   async function login() {
     setSubmitting(true);
     await axios
       .post(
-        `${DUMMY_JSON_ENDPOINT}/auth/login`,
+        `${AUTH}/auth/login`,
         {
           username: userName,
           password,

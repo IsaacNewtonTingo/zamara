@@ -43,7 +43,7 @@ export default function EditStaff({ route, navigation }) {
   const [submitting, setSubmitting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const url = `${process.env.CRUD_ENDPOINT}`;
+  const url = `${process.env.CRUD}`;
   const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
 
   async function edit() {
@@ -55,6 +55,8 @@ export default function EditStaff({ route, navigation }) {
       });
     } else {
       setSubmitting(true);
+      console.log(url);
+      console.log(emailUrl);
       try {
         await axios.put(`${url}/${staffID}`, {
           staffName,
@@ -95,11 +97,13 @@ export default function EditStaff({ route, navigation }) {
   }
 
   async function deleteStaff() {
+    console.log(url);
+    console.log(emailUrl);
     setSubmitting(true);
     try {
       await axios.delete(`${url}/${staffID}`);
 
-      //send email
+      // send email
       await axios.post(emailUrl, {
         message: `Greeting ${staffName}, we are glad to inform you that your staff profile has been deleted`,
         subject: `Profile Notification #Deleted`,

@@ -32,7 +32,7 @@ export default function AddStaff({ route, navigation }) {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const url = `${process.env.CRUD_ENDPOINT}`;
+  const url = `${process.env.CRUD}`;
   const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
 
   async function addStaff() {
@@ -44,7 +44,8 @@ export default function AddStaff({ route, navigation }) {
       });
     } else {
       setSubmitting(true);
-
+      console.log(url);
+      console.log(emailUrl);
       try {
         await axios.post(`${url}`, {
           staffName,

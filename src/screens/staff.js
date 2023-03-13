@@ -20,7 +20,7 @@ export default function Staff({ navigation, route }) {
   const [loadingData, setLoadingData] = useState(true);
   const [staffList, setStaffList] = useState([]);
 
-  const url = `${process.env.CRUD_ENDPOINT}`;
+  const url = `${process.env.CRUD}`;
 
   useEffect(() => {
     getStaff();

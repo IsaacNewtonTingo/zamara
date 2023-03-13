@@ -45,7 +45,9 @@
     "react-native-svg": "13.4.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.3.4",
-    "react-navigation": "^4.4.4"
+    "react-native-xml2js": "^1.0.3",
+    "react-navigation": "^4.4.4",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
