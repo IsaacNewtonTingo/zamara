@@ -46,7 +46,7 @@ export default function DrawerContent(props) {
               )}
               label="Continents"
               onPress={() => {
-                props.navigation.navigate("Home");
+                props.navigation.navigate("ContinentsStack");
               }}
             />
           </Drawer.Section>

@@ -12,7 +12,7 @@ export default function ContinentsStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen component={Continents} name="ContinentsfScreen" />
+      <Stack.Screen component={Continents} name="Continents" />
     </Stack.Navigator>
   );
 }
