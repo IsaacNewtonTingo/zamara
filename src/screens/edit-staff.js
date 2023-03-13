@@ -43,7 +43,7 @@ export default function EditStaff({ route, navigation }) {
   const [submitting, setSubmitting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const url = `${process.env.CRUD_CRUD_ENDPOINT}`;
+  const url = `${process.env.CRUD_ENDPOINT}`;
 
   async function edit() {
     if (!staffName || !staffNumber || !email || !department || !salary) {

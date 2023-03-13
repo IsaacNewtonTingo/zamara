@@ -24,7 +24,7 @@ const B = (props) => <PrimaryText>{props.children}</PrimaryText>;
 export default function Home() {
   const { storedCredentials } = useContext(CredentialsContext);
 
-  const url = `${process.env.ENDPOINT}`;
+  const url = `${process.env.DUMMY_JSON_ENDPOINT}`;
 
   const userID = storedCredentials.id;
 

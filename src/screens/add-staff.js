@@ -13,6 +13,8 @@ import CardGradient from "../components/cards/card-gradient";
 import { showMyToast } from "../functions/show-toast";
 import axios from "axios";
 
+import RNSmtpMailer from "react-native-smtp-mailer";
+
 import {
   Octicons,
   FontAwesome,
@@ -32,7 +34,7 @@ export default function AddStaff({ route, navigation }) {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const url = `${process.env.CRUD_CRUD_ENDPOINT}`;
+  const url = `${process.env.CRUD_ENDPOINT}`;
 
   async function addStaff() {
     if (!staffName || !staffNumber || !email || !department || !salary) {
@@ -51,13 +53,22 @@ export default function AddStaff({ route, navigation }) {
           department,
           salary,
         })
-        .then((response) => {
+        .then(async (response) => {
           console.log(response.data);
           setSubmitting(false);
+
+          await RNSmtpMailer.sendMail({
+            mailhost: "smtp.smtpbucket.com",
+            port: 8025,
+            ssl: false,
+            recipients: email,
+            subject: "Profile Notification #Created",
+            body: `Greeting ${staffName}, we are glad to inform you that your staff profile has been created.`,
+          });
           showMyToast({
             status: "success",
             title: "Success",
-            description: "Staff records updated successfully",
+            description: "Staff created successfully",
           });
           navigation.goBack();
         })
