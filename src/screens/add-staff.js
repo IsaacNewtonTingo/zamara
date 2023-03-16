@@ -34,6 +34,7 @@ export default function AddStaff({ route, navigation }) {
 
   const url = `${process.env.CRUD}`;
   const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
+  //----------------
 
   async function addStaff() {
     if (!staffName || !staffNumber || !email || !department || !salary) {
