@@ -51,6 +51,7 @@ export default function AddStaff({ route, navigation }) {
   //--------------------
   //--------------------
   //--------------------
+  //--------------------
   async function addStaff() {
     if (!staffName || !staffNumber || !email || !department || !salary) {
       showMyToast({
