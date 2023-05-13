@@ -34,10 +34,6 @@ export default function AddStaff({ route, navigation }) {
 
   const url = `${process.env.CRUD}`;
   const emailUrl = `${process.env.EMAIL_ENDPOINT}`;
-  //----------------
-  //--------------
-  //---------
-  //---------
   //--------------------
   //--------------------
   //--------------------
